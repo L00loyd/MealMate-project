@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your MealMate Box — Cart | MealMate</title>
+  <!-- Google Fonts: Fredoka (Friendly Rounded Display) & Plus Jakarta Sans (Clean UI Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       1. MEALMATE DESIGN SYSTEM TOKENS
+       ========================================================================== */
+    :root {
+      /* Core Brand Logo Colours */
+      --teal-primary: #006B6E;       /* Trust & Reliability */
+      --teal-dark: #004E50;
+      --teal-light: #E0F2F1;
+      --orange-primary: #FF6B00;     /* Energy, Friendliness & Welcoming Brand */
+      --orange-hover: #E05A00;
+      --orange-soft: #FFF0E5;
+      --green-primary: #2E9E28;      /* Freshness, Health & Balanced Lifestyle */
+      --green-dark: #1F7A1B;
+      --green-mint: #E8F5E9;
+
+      /* Poster-Inspired Warm Neutrals & Highlights */
+      --bg-cream: #FFFDF9;
+      --bg-oat: #F7F2E7;
+      --bg-oat-hover: #EFE8D8;
+      --sunny-yellow: #FFE5A3;
+      --sunny-gold: #F5B82E;
+      --text-charcoal: #1E2B2C;
+      --text-slate: #526567;
+      --border-sand: #E5DEC9;
+      --white: #FFFFFF;
+
+      /* Typography */
+      --font-display: 'Fredoka', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+
+      /* Layout & Effects */
+      --radius-sm: 10px;
+      --radius-md: 18px;
+      --radius-lg: 28px;
+      --radius-pill: 9999px;
+      --shadow-sm: 0 4px 12px rgba(0, 107, 110, 0.06);
+      --shadow-card: 0 12px 28px -6px rgba(0, 107, 110, 0.10);
+      --shadow-orange: 0 8px 20px rgba(255, 107, 0, 0.28);
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-cream);
+      color: var(--text-charcoal);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ==========================================================================
+       2. REUSABLE UI COMPONENTS (BUTTONS, BADGES, PILLS)
+       ========================================================================== */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 5%;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 13px 26px;
+      border-radius: var(--radius-pill);
+      border: 2px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background-color: var(--orange-primary);
+      color: var(--white);
+      box-shadow: var(--shadow-orange);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--orange-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background-color: var(--teal-primary);
+      color: var(--white);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--teal-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border-color: var(--teal-primary);
+      color: var(--teal-primary);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--teal-primary);
+      color: var(--white);
+    }
+
+    .btn-sm {
+      padding: 9px 18px;
+      font-size: 0.85rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      letter-spacing: 0.2px;
+    }
+
+    .badge-green {
+      background-color: var(--green-mint);
+      color: var(--green-primary);
+      border: 1px solid rgba(46, 158, 40, 0.2);
+    }
+
+    .badge-deal {
+      background-color: var(--sunny-yellow);
+      color: var(--text-charcoal);
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      padding: 5px 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .badge-orange {
+      background-color: var(--orange-soft);
+      color: var(--orange-primary);
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 48px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 2.6rem);
+      color: var(--teal-primary);
+      line-height: 1.2;
+      margin: 10px 0 12px;
+    }
+
+    .section-subtitle {
+      color: var(--text-slate);
+      font-size: 1.05rem;
+    }
+
+    /* ==========================================================================
+       3. TOP ANNOUNCEMENT BAR & STICKY NAVIGATION BAR
+       ========================================================================== */
+    .top-promo-bar {
+      background-color: var(--teal-primary);
+      color: var(--white);
+      font-size: 0.84rem;
+      font-weight: 600;
+      padding: 9px 5%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+    }
+
+    .top-promo-bar span.promo-pill {
+      background-color: var(--sunny-yellow);
+      color: var(--text-charcoal);
+      font-weight: 800;
+      padding: 2px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 0.75rem;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      background-color: rgba(255, 253, 249, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-sand);
+      padding: 12px 0;
+    }
+
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    /* Custom SVG Brand Logo Container */
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-svg-wrap {
+      width: 54px;
+      height: 54px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 4px 8px rgba(0, 107, 110, 0.12));
+      transition: transform 0.25s ease;
+    }
+
+    .brand-logo:hover .logo-svg-wrap {
+      transform: scale(1.06) rotate(-3deg);
+    }
+
+    .brand-wordmark-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-wordmark {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.4px;
+    }
+
+    .brand-wordmark .meal { color: var(--teal-primary); }
+    .brand-wordmark .mate { color: var(--orange-primary); }
+
+    .brand-tagline {
+      font-size: 0.73rem;
+      font-weight: 700;
+      color: var(--green-primary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 3px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-charcoal);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 6px 2px;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--teal-primary);
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background-color: var(--orange-primary);
+      border-radius: 2px;
+      transition: width 0.25s ease;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .campus-selector {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--bg-oat);
+      border: 1px solid var(--border-sand);
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--teal-primary);
+    }
+
+    .campus-selector select {
+      border: none;
+      background: transparent;
+      font-family: var(--font-body);
+      font-weight: 700;
+      color: var(--teal-primary);
+      cursor: pointer;
+      outline: none;
+    }
+
+    .cart-trigger-btn {
+      position: relative;
+      background-color: var(--green-mint);
+      color: var(--teal-primary);
+      border: 1px solid rgba(0, 107, 110, 0.15);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .cart-trigger-btn:hover {
+      background-color: var(--teal-primary);
+      color: var(--white);
+    }
+
+    .cart-count-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background-color: var(--orange-primary);
+      color: var(--white);
+      font-size: 0.72rem;
+      font-weight: 800;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg-cream);
+    }
+
+    /* ==========================================================================
+       4. HERO SECTION ("GOOD DEAL, EXCELLENT MEAL")
+       ========================================================================== */
+    .hero-section {
+      position: relative;
+      padding: 64px 0 80px;
+      overflow: hidden;
+    }
+
+    /* Decorative organic background shapes inspired by the poster */
+    .hero-bg-blob {
+      position: absolute;
+      top: -120px;
+      right: -120px;
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, var(--green-mint) 0%, rgba(255,253,249,0) 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 4.5vw, 3.8rem);
+      color: var(--teal-primary);
+      line-height: 1.12;
+      margin: 18px 0 20px;
+    }
+
+    .hero-title .brush-deal {
+      position: relative;
+      display: inline-block;
+      z-index: 1;
+    }
+
+    .hero-title .brush-deal::after {
+      content: "";
+      position: absolute;
+      left: -4px;
+      right: -4px;
+      bottom: 6px;
+      height: 16px;
+      background-color: var(--sunny-yellow);
+      border-radius: 8px;
+      z-index: -1;
+      transform: rotate(-1deg);
+    }
+
+    .hero-title .orange-text {
+      color: var(--orange-primary);
+    }
+
+    .hero-lead {
+      font-size: 1.12rem;
+      color: var(--text-slate);
+      max-width: 560px;
+      margin-bottom: 32px;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding-top: 24px;
+      border-top: 2px dashed var(--border-sand);
+    }
+
+    .metric-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .metric-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background-color: var(--bg-oat);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .metric-text strong {
+      display: block;
+      font-family: var(--font-display);
+      color: var(--teal-primary);
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+
+    .metric-text span {
+      font-size: 0.78rem;
+      color: var(--text-slate);
+    }
+
+    /* Hero Right Visual Showcase */
+    .hero-showcase {
+      position: relative;
+    }
+
+    .showcase-main-card {
+      background: linear-gradient(145deg, var(--bg-oat) 0%, var(--green-mint) 100%);
+      border: 2px solid var(--border-sand);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px 28px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      text-align: center;
+    }
+
+    .bowl-illustration {
+      width: 220px;
+      height: 220px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #FFFFFF, var(--sunny-yellow));
+      border: 6px solid var(--white);
+      box-shadow: 0 14px 30px rgba(0, 107, 110, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .bowl-emoji-group {
+      font-size: 4.5rem;
+      line-height: 1;
+    }
+
+    .floating-pill {
+      position: absolute;
+      background-color: var(--white);
+      border: 1px solid var(--border-sand);
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      z-index: 2;
+    }
+
+    .floating-pill.top-left {
+      top: 18px;
+      left: -18px;
+      color: var(--teal-primary);
+    }
+
+    .floating-pill.bottom-right {
+      bottom: 95px;
+      right: -18px;
+      color: var(--green-primary);
+    }
+
+    /* ==========================================================================
+       5. BRAND STORY SECTION (MEANING OF THE LOGO & COLOURS)
+       ========================================================================== */
+    .brand-story-section {
+      padding: 80px 0;
+      background-color: var(--bg-oat);
+      border-top: 1px solid var(--border-sand);
+      border-bottom: 1px solid var(--border-sand);
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .pillar-card {
+      background-color: var(--bg-cream);
+      border: 1px solid var(--border-sand);
+      border-radius: var(--radius-md);
+      padding: 28px 22px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pillar-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-card);
+      border-color: var(--teal-primary);
+    }
+
+    .pillar-icon-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: var(--green-mint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      margin-bottom: 18px;
+      border: 2px solid rgba(46, 158, 40, 0.2);
+    }
+
+    .pillar-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      background-color: var(--green-mint);
+      color: var(--green-primary);
+      margin-bottom: 8px;
+    }
+
+    .pillar-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: var(--teal-primary);
+      margin-bottom: 10px;
+    }
+
+    .pillar-card p {
+      font-size: 0.9rem;
+      color: var(--text-slate);
+    }
+
+    /* Colour Psychology Bar */
+    .colour-meaning-strip {
+      background-color: var(--bg-cream);
+      border: 1px solid var(--border-sand);
+      border-radius: var(--radius-md);
+      padding: 24px 32px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .colour-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .colour-swatch {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+    /* ==========================================================================
+       6. INTERACTIVE CAMPUS MENU SECTION
+       ========================================================================== */
+    .menu-section {
+      padding: 84px 0;
+    }
+
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .filter-pill {
+      background-color: var(--bg-oat);
+      border: 1px solid var(--border-sand);
+      color: var(--text-charcoal);
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 10px 20px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .filter-pill:hover {
+      background-color: var(--bg-oat-hover);
+    }
+
+    .filter-pill.active {
+      background-color: var(--teal-primary);
+      color: var(--white);
+      border-color: var(--teal-primary);
+      box-shadow: 0 4px 12px rgba(0, 107, 110, 0.25);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 28px;
+    }
+
+    .meal-card {
+      background-color: var(--white);
+      border: 1px solid var(--border-sand);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .meal-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .meal-card-visual {
+      height: 195px;
+      background: linear-gradient(135deg, var(--bg-oat) 0%, var(--green-mint) 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4.5rem;
+    }
+
+    .meal-card-top-badges {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .meal-card-body {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .meal-meta-tags {
+      display: flex;
+      gap: 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-slate);
+      margin-bottom: 8px;
+    }
+
+    .meal-card-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: var(--text-charcoal);
+      margin-bottom: 8px;
+    }
+
+    .meal-card-desc {
+      font-size: 0.9rem;
+      color: var(--text-slate);
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .meal-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-sand);
+    }
+
+    .chef-prep-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--teal-primary);
+    }
+
+    /* ==========================================================================
+       7. HOW IT WORKS & STUDENT MEAL PASS PLANS
+       ========================================================================== */
+    .steps-section {
+      padding: 72px 0;
+      background-color: var(--teal-primary);
+      color: var(--white);
+      position: relative;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 40px;
+    }
+
+    .step-card {
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius-md);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    .step-number {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: var(--orange-primary);
+      color: var(--white);
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .step-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      margin-bottom: 10px;
+      color: var(--sunny-yellow);
+    }
+
+    .plans-section {
+      padding: 84px 0;
+    }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .plan-card {
+      background-color: var(--white);
+      border: 2px solid var(--border-sand);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .plan-card.popular {
+      border-color: var(--orange-primary);
+      background: linear-gradient(180deg, var(--white) 0%, var(--bg-oat) 100%);
+      box-shadow: var(--shadow-card);
+      transform: translateY(-8px);
+    }
+
+    .popular-ribbon {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--orange-primary);
+      color: var(--white);
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 5px 16px;
+      border-radius: var(--radius-pill);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .plan-price {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: var(--teal-primary);
+      margin: 14px 0 4px;
+    }
+
+    .plan-price span {
+      font-size: 1rem;
+      color: var(--text-slate);
+      font-family: var(--font-body);
+    }
+
+    .plan-features {
+      list-style: none;
+      margin: 24px 0 32px;
+      flex-grow: 1;
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 0.92rem;
+    }
+
+    /* ==========================================================================
+       8. STUDENT TESTIMONIALS & FOOTER
+       ========================================================================== */
+    .reviews-section {
+      padding: 72px 0;
+      background-color: var(--bg-oat);
+      border-top: 1px solid var(--border-sand);
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .review-card {
+      background-color: var(--bg-cream);
+      border: 1px solid var(--border-sand);
+      border-radius: var(--radius-md);
+      padding: 26px;
+    }
+
+    .footer {
+      background-color: var(--teal-dark);
+      color: var(--white);
+      padding: 64px 0 32px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+      gap: 40px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .footer h4 {
+      font-family: var(--font-display);
+      color: var(--sunny-yellow);
+      font-size: 1.15rem;
+      margin-bottom: 16px;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--sunny-yellow);
+    }
+
+    /* ==========================================================================
+       9. SLIDE-OUT MEAL BOX (CART DRAWER) & TOAST
+       ========================================================================== */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(30, 43, 44, 0.5);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .cart-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 400px;
+      height: 100vh;
+      background-color: var(--bg-cream);
+      z-index: 1001;
+      box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-drawer.open {
+      transform: translateX(0);
+    }
+
+    .cart-header {
+      padding: 20px 24px;
+      background-color: var(--teal-primary);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cart-body {
+      padding: 20px 24px;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--bg-oat);
+      border: 1px solid var(--border-sand);
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+    }
+
+    .cart-footer {
+      padding: 20px 24px;
+      border-top: 1px solid var(--border-sand);
+      background-color: var(--white);
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 992px) {
+      .hero-grid,
+      .pillars-grid,
+      .colour-meaning-strip,
+      .steps-grid,
+      .plans-grid,
+      .reviews-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
+      .plan-card.popular {
+        transform: none;
+      }
+    }
+  
+    /* MEALMATE MIKO AI CHAT WIDGET */
+    #miko-launcher {
+      position: fixed; right: 26px; bottom: 24px; z-index: 1200;
+      border: 0; border-radius: 999px; padding: 14px 20px;
+      background: var(--teal-primary); color: white; cursor: pointer;
+      font: 800 0.95rem var(--font-body); box-shadow: 0 8px 24px rgba(0,78,80,.25);
+    }
+    #miko-launcher:hover { background: var(--teal-dark); transform: translateY(-2px); }
+    #miko-panel {
+      display: none; position: fixed; right: 26px; bottom: 88px; z-index: 1201;
+      width: min(370px, calc(100vw - 28px)); height: min(520px, calc(100vh - 120px));
+      background: var(--bg-cream); border: 1px solid var(--border-sand);
+      border-radius: 20px; box-shadow: 0 16px 45px rgba(0,0,0,.2);
+      overflow: hidden; flex-direction: column;
+    }
+    #miko-panel.open { display: flex; }
+    .miko-header {
+      background: var(--teal-primary); color: white; padding: 15px 17px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .miko-header strong { font: 700 1.15rem var(--font-display); }
+    .miko-header small { display: block; opacity: .85; font-size: .75rem; }
+    #miko-close { background: transparent; color: white; border: 0; font-size: 1.4rem; cursor: pointer; }
+    #miko-messages { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+    .miko-message { max-width: 88%; padding: 10px 13px; border-radius: 14px; font-size: .88rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .miko-bot { align-self: flex-start; background: var(--teal-light); color: var(--text-charcoal); border-bottom-left-radius: 4px; }
+    .miko-user { align-self: flex-end; background: var(--orange-soft); color: var(--text-charcoal); border-bottom-right-radius: 4px; }
+    .miko-input-row { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--border-sand); background: white; }
+    #miko-input { flex: 1; min-width: 0; border: 1px solid var(--border-sand); border-radius: 999px; padding: 11px 14px; font:  .88rem var(--font-body); outline-color: var(--teal-primary); }
+    #miko-send { border: 0; border-radius: 999px; padding: 0 16px; background: var(--orange-primary); color: white; font-weight: 800; cursor: pointer; }
+    #miko-send:disabled { opacity: .55; cursor: wait; }
+    @media (max-width: 480px) { #miko-launcher { right: 14px; bottom: 14px; } #miko-panel { right: 14px; bottom: 76px; } }
+
+  
+    /* ==========================================================================
+       CART PAGE
+       ========================================================================== */
+    [hidden] { display: none !important; }
+    .cart-page { padding: 40px 0 88px; }
+
+    .breadcrumb { font-size: 0.85rem; font-weight: 600; color: var(--text-slate); margin-bottom: 14px; }
+    .breadcrumb a { color: var(--teal-primary); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    .cart-page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+    .cart-page-title { font-family: var(--font-display); font-size: clamp(2rem, 3.5vw, 2.6rem); color: var(--teal-primary); line-height: 1.15; }
+    .cart-page-sub { color: var(--text-slate); }
+
+    .cart-layout { display: grid; grid-template-columns: 1.55fr 1fr; gap: 32px; align-items: start; }
+
+    .panel { background: var(--white); border: 1px solid var(--border-sand); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 26px; border-bottom: 2px dashed var(--border-sand); }
+    .panel-head h2 { font-family: var(--font-display); font-size: 1.3rem; color: var(--teal-primary); }
+    .link-btn { background: none; border: none; font: 700 0.85rem var(--font-body); color: #c0392b; cursor: pointer; padding: 4px 6px; border-radius: 6px; }
+    .link-btn:hover { background: #fdecea; }
+
+    .line-item { display: grid; grid-template-columns: 76px 1fr auto; gap: 18px; align-items: center; padding: 20px 26px; border-bottom: 1px solid var(--border-sand); }
+    .line-item:last-child { border-bottom: none; }
+    .line-thumb { width: 76px; height: 76px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--bg-oat) 0%, var(--green-mint) 100%); display: flex; align-items: center; justify-content: center; font-size: 2.4rem; border: 1px solid var(--border-sand); }
+    .line-name { font-family: var(--font-display); font-size: 1.12rem; color: var(--text-charcoal); line-height: 1.3; margin-bottom: 2px; }
+    .line-meta { font-size: 0.8rem; font-weight: 600; color: var(--text-slate); margin-bottom: 10px; }
+    .line-controls { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+    .qty { display: inline-flex; align-items: center; background: var(--bg-oat); border: 1px solid var(--border-sand); border-radius: var(--radius-pill); }
+    .qty button { width: 34px; height: 34px; border: none; background: transparent; font: 800 1.1rem var(--font-body); color: var(--teal-primary); cursor: pointer; border-radius: 50%; transition: var(--transition); }
+    .qty button:hover:not(:disabled) { background: var(--teal-primary); color: var(--white); }
+    .qty button:disabled { opacity: 0.35; cursor: not-allowed; }
+    .qty output { min-width: 28px; text-align: center; font-weight: 800; }
+
+    .remove-btn { background: none; border: none; font: 700 0.82rem var(--font-body); color: #c0392b; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+    .line-price { text-align: right; }
+    .line-price strong { display: block; font-family: var(--font-display); font-size: 1.25rem; color: var(--teal-primary); }
+    .line-price span { font-size: 0.78rem; color: var(--text-slate); font-weight: 600; }
+
+    .empty-state { text-align: center; padding: 64px 28px 56px; }
+    .empty-state .empty-icon { font-size: 4rem; margin-bottom: 8px; }
+    .empty-state h2 { font-family: var(--font-display); color: var(--teal-primary); font-size: 1.7rem; margin-bottom: 6px; }
+    .empty-state p { color: var(--text-slate); max-width: 420px; margin: 0 auto 24px; }
+
+    .suggest-section { margin-top: 28px; }
+    .suggest-section h3 { font-family: var(--font-display); font-size: 1.25rem; color: var(--teal-primary); margin-bottom: 14px; }
+    .suggest-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .suggest-card { background: var(--white); border: 1px solid var(--border-sand); border-radius: var(--radius-md); padding: 16px; display: flex; flex-direction: column; gap: 6px; box-shadow: var(--shadow-sm); transition: var(--transition); }
+    .suggest-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
+    .suggest-card .s-emoji { font-size: 2rem; }
+    .suggest-card .s-name { font-weight: 700; font-size: 0.88rem; line-height: 1.35; flex-grow: 1; }
+    .suggest-card .s-meta { font-size: 0.76rem; color: var(--text-slate); font-weight: 600; }
+    .suggest-card .s-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .suggest-card .s-price { font-family: var(--font-display); color: var(--teal-primary); font-size: 1.05rem; }
+
+    .miko-nudge { margin-top: 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; background: var(--teal-light); border: 1px solid rgba(0,107,110,0.18); border-radius: var(--radius-md); padding: 18px 22px; }
+    .miko-nudge .m-emoji { font-size: 2rem; }
+    .miko-nudge .m-text { flex: 1; min-width: 200px; }
+    .miko-nudge strong { font-family: var(--font-display); color: var(--teal-primary); font-size: 1.05rem; display: block; }
+    .miko-nudge span { font-size: 0.86rem; color: var(--text-slate); }
+
+    /* Summary */
+    .summary { position: sticky; top: 96px; }
+    .summary-body { padding: 22px 26px 26px; }
+    .field-label { display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--teal-primary); margin-bottom: 6px; }
+    .field { width: 100%; font: 600 0.92rem var(--font-body); color: var(--text-charcoal); background: var(--bg-cream); border: 1px solid var(--border-sand); border-radius: var(--radius-sm); padding: 11px 12px; outline-color: var(--teal-primary); }
+    .field-group { margin-bottom: 16px; }
+
+    .slot-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .slot { position: relative; }
+    .slot input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+    .slot label { display: block; border: 2px solid var(--border-sand); border-radius: var(--radius-md); padding: 10px 12px; background: var(--bg-cream); transition: var(--transition); }
+    .slot label strong { display: block; font-size: 0.88rem; }
+    .slot label span { font-size: 0.74rem; color: var(--text-slate); font-weight: 600; }
+    .slot input:checked + label { border-color: var(--orange-primary); background: var(--orange-soft); }
+    .slot input:focus-visible + label { outline: 3px solid var(--teal-primary); outline-offset: 2px; }
+
+    .promo-row { display: flex; gap: 8px; }
+    .promo-row .field { text-transform: uppercase; }
+    .promo-msg { font-size: 0.8rem; font-weight: 700; margin-top: 6px; min-height: 1.2em; }
+    .promo-msg.ok { color: var(--green-primary); }
+    .promo-msg.err { color: #c0392b; }
+
+    .totals { border-top: 2px dashed var(--border-sand); padding-top: 16px; margin-top: 4px; }
+    .total-row { display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; color: var(--text-slate); }
+    .total-row.discount { color: var(--green-primary); }
+    .total-row.grand { color: var(--text-charcoal); font-weight: 700; font-size: 1.1rem; padding-top: 12px; margin-top: 6px; border-top: 1px solid var(--border-sand); margin-bottom: 18px; }
+    .total-row.grand .amount { font-family: var(--font-display); color: var(--teal-primary); font-size: 1.6rem; }
+    .btn-block { width: 100%; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+    .trust-note { display: flex; gap: 8px; align-items: flex-start; margin-top: 14px; font-size: 0.78rem; color: var(--text-slate); }
+
+    /* Confirmation modal */
+    .modal-overlay { position: fixed; inset: 0; z-index: 1300; background: rgba(30,43,44,0.55); display: none; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--bg-cream); border-radius: var(--radius-lg); max-width: 460px; width: 100%; padding: 36px 30px 30px; text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto; }
+    .modal .m-check { width: 72px; height: 72px; margin: 0 auto 14px; border-radius: 50%; background: var(--green-mint); border: 3px solid var(--green-primary); display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+    .modal h2 { font-family: var(--font-display); color: var(--teal-primary); font-size: 1.7rem; }
+    .modal .order-no { display: inline-block; margin: 10px 0 16px; background: var(--sunny-yellow); font-family: var(--font-display); padding: 4px 16px; border-radius: var(--radius-pill); }
+    .modal dl { text-align: left; background: var(--white); border: 1px solid var(--border-sand); border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 20px; font-size: 0.9rem; }
+    .modal dl div { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; }
+    .modal dt { color: var(--text-slate); font-weight: 600; }
+    .modal dd { font-weight: 700; text-align: right; }
+
+    .toast { position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 30px); background: var(--text-charcoal); color: var(--white); padding: 11px 20px; border-radius: var(--radius-pill); font-weight: 700; font-size: 0.88rem; opacity: 0; pointer-events: none; transition: var(--transition); z-index: 1400; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 992px) {
+      .cart-layout { grid-template-columns: 1fr; }
+      .summary { position: static; }
+      .suggest-grid { grid-template-columns: 1fr; }
+      .campus-selector { display: none; }
+    }
+    @media (max-width: 560px) {
+      .line-item { grid-template-columns: 60px 1fr; padding: 18px; }
+      .line-thumb { width: 60px; height: 60px; font-size: 1.9rem; }
+      .line-price { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: baseline; text-align: left; }
+      .panel-head { padding: 16px 18px; }
+      .summary-body { padding: 20px 18px; }
+      .nav-actions .btn { display: none; }
+    }
+  
+    /* Compact navbar on phones so brand + login + cart fit */
+    @media (max-width: 560px) {
+      .navbar-inner { gap: 10px; }
+      .brand-tagline { display: none; }
+      .logo-svg-wrap { width: 44px; height: 44px; }
+      .brand-wordmark { font-size: 1.45rem; }
+      .nav-actions { gap: 8px; }
+      .cart-trigger-btn { width: 40px; height: 40px; }
+      .top-promo-bar { font-size: 0.76rem; }
+    }
+  
+    /* Keep nav links on one line on mid-size desktops */
+    @media (min-width: 993px) and (max-width: 1440px) {
+      .navbar-inner { gap: 14px; }
+      .nav-links { gap: 14px; }
+      .nav-links a { white-space: nowrap; font-size: 0.85rem; }
+      .nav-actions { gap: 8px; }
+      .nav-actions > .btn-primary { display: none; }
+      .campus-selector { padding: 8px 10px; }
+      .campus-selector select { max-width: 120px; text-overflow: ellipsis; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP STUDENT PROMO BAR -->
+  <div class="top-promo-bar">
+    <span class="promo-pill">GOOD DEAL ALERT</span>
+    <span>Verify your Student ID today & get <strong>20% OFF</strong> your first 5-Meal Campus Pass! 🌿</span>
+  </div>
+
+  <!-- STICKY NAVIGATION BAR -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <!-- Brand Logo (Custom SVG incorporating Chef Hat, Spoon, Fork, Green Leaves & Teal/Orange M) -->
+      <a href="HOME.html#" class="brand-logo" aria-label="MealMate Home">
+        <div class="logo-svg-wrap">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <!-- Outer Teal & Orange Circle Arc -->
+            <path d="M 18 72 A 40 40 0 0 1 25 24" fill="none" stroke="#006B6E" stroke-width="5" stroke-linecap="round"/>
+            <path d="M 85 42 A 40 40 0 0 1 82 72" fill="none" stroke="#FF6B00" stroke-width="5" stroke-linecap="round"/>
+            <!-- Chef Hat (Top Left) -->
+            <path d="M 28 28 C 22 20, 32 10, 42 15 C 48 8, 62 12, 60 22 C 66 24, 62 32, 56 32 L 32 34 Z" fill="#FFFFFF" stroke="#004E50" stroke-width="4" stroke-linejoin="round"/>
+            <!-- Green Leaves (Top Right) -->
+            <path d="M 68 28 C 68 15, 82 12, 82 12 C 82 12, 82 26, 68 28 Z" fill="#2E9E28"/>
+            <path d="M 72 34 C 80 26, 92 30, 92 30 C 92 30, 84 40, 72 34 Z" fill="#2E9E28"/>
+            <!-- Letter M Left Half (Teal) -->
+            <path d="M 26 82 L 26 44 C 26 36, 36 36, 40 42 L 50 58 L 50 70 L 38 54 L 38 82 Z" fill="#006B6E"/>
+            <!-- Letter M Right Half (Orange) -->
+            <path d="M 50 58 L 60 42 C 64 36, 74 36, 74 44 L 74 82 L 62 82 L 62 54 L 50 70 Z" fill="#FF6B00"/>
+            <!-- White Spoon Silhouette inside Left Stem -->
+            <ellipse cx="32" cy="54" rx="4.5" ry="6.5" fill="#FFFDF9"/>
+            <rect x="30.5" y="60" width="3" height="22" rx="1.5" fill="#FFFDF9"/>
+            <!-- White Fork Silhouette inside Right Stem -->
+            <rect x="64" y="48" width="8" height="8" rx="2" fill="#FFFDF9"/>
+            <rect x="66.5" y="55" width="3" height="27" rx="1.5" fill="#FFFDF9"/>
+            <!-- Friendly Smile Curve under M -->
+            <path d="M 43 75 Q 50 82 57 75" fill="none" stroke="#FF6B00" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="brand-wordmark-group">
+          <div class="brand-wordmark"><span class="meal">MEAL</span><span class="mate">MATE</span></div>
+          <div class="brand-tagline">🌿 Good Deal, Excellent Meal</div>
+        </div>
+      </a>
+
+      <!-- Center Navigation Links -->
+      <ul class="nav-links">
+        <li><a href="HOME.html#menu">Today's Menu</a></li>
+        <li><a href="HOME.html#logo-story">Our Brand Promise</a></li>
+        <li><a href="HOME.html#how-it-works">How It Works</a></li>
+        <li><a href="HOME.html#student-plans">Student Meal Pass</a></li>
+        <li><a href="HOME.html#reviews">Campus Reviews</a></li>
+      </ul>
+
+      <!-- Right Utility & Conversion Actions -->
+      <div class="nav-actions">
+        <div class="campus-selector" title="Select Your University Pickup Hub">
+          <span>📍</span>
+          <select id="campusSelect" aria-label="Campus Hub">
+            <option value="USM Main Hub">USM Main Gate Hub</option>
+            <option value="UM Central">UM Central Student Mall</option>
+            <option value="UiTM Shah Alam">UiTM Kolej Melati Hub</option>
+            <option value="UTM Skudai">UTM Arked Cengal Hub</option>
+          </select>
+        </div>
+
+        <span id="authSlot"></span>
+        <a class="cart-trigger-btn" href="CART.html" aria-label="Your MealMate Box" aria-current="page" style="text-decoration:none; background-color:var(--teal-primary); color:var(--white);">
+          🍱
+          <span class="cart-count-badge" id="cartCount" data-managed="1">0</span>
+        </a>
+
+        <a href="HOME.html#menu" class="btn btn-primary btn-sm">Order Now 🍴</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CART PAGE -->
+  <main class="cart-page">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="HOME.html">Home</a> &nbsp;/&nbsp; <a href="HOME.html#menu">Menu</a> &nbsp;/&nbsp; Your MealMate Box</nav>
+
+      <div class="cart-page-head">
+        <div>
+          <h1 class="cart-page-title">🍱 Your MealMate Box</h1>
+          <p class="cart-page-sub" id="headSub">Review your meals, pick a pickup slot and confirm.</p>
+        </div>
+        <a href="HOME.html#menu" class="btn btn-outline btn-sm">← Keep Browsing Menu</a>
+      </div>
+
+      <div class="cart-layout">
+        <!-- LEFT: items -->
+        <div>
+          <section class="panel" aria-label="Items in your box">
+            <div class="panel-head">
+              <h2 id="itemsHeading">Your Meals</h2>
+              <button class="link-btn" id="clearBtn" type="button">Clear box</button>
+            </div>
+            <div id="itemsList"></div>
+          </section>
+
+          <div class="miko-nudge" id="mikoNudge">
+            <span class="m-emoji">🥗</span>
+            <div class="m-text">
+              <strong>Not sure what fits your budget or goals?</strong>
+              <span>Ask Miko for a meal that matches your calories, protein or diet.</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" type="button" id="askMikoBtn">Ask Miko 💬</button>
+          </div>
+
+          <section class="suggest-section" id="suggestSection" aria-label="Add more to your box">
+            <h3>Add something to your box</h3>
+            <div class="suggest-grid" id="suggestGrid"></div>
+          </section>
+        </div>
+
+        <!-- RIGHT: summary -->
+        <aside class="panel summary" aria-label="Order summary">
+          <div class="panel-head"><h2>Order Summary</h2><span class="badge badge-green" id="mealCountBadge">0 items</span></div>
+          <div class="summary-body">
+            <div class="field-group">
+              <label class="field-label" for="hubSelect">📍 Pickup Hub</label>
+              <select id="hubSelect" class="field">
+                <option value="USM Main Hub">USM Main Gate Hub</option>
+                <option value="UM Central">UM Central Student Mall</option>
+                <option value="UiTM Shah Alam">UiTM Kolej Melati Hub</option>
+                <option value="UTM Skudai">UTM Arked Cengal Hub</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <span class="field-label">⏰ Pickup Time</span>
+              <div class="slot-options" role="radiogroup" aria-label="Pickup time">
+                <div class="slot"><input type="radio" name="slot" id="slotLunch" value="Lunch · 11:45 AM – 2:15 PM" checked><label for="slotLunch"><strong>Lunch</strong><span>11:45 AM – 2:15 PM<br>Order before 10:30 AM</span></label></div>
+                <div class="slot"><input type="radio" name="slot" id="slotDinner" value="Dinner · 5:45 PM – 8:15 PM"><label for="slotDinner"><strong>Dinner</strong><span>5:45 PM – 8:15 PM<br>Order before 4:30 PM</span></label></div>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="promoInput">🎓 Student Promo Code</label>
+              <div class="promo-row">
+                <input id="promoInput" class="field" type="text" placeholder="e.g. STUDENT20" autocomplete="off" maxlength="20">
+                <button class="btn btn-secondary btn-sm" type="button" id="promoBtn">Apply</button>
+              </div>
+              <div class="promo-msg" id="promoMsg" aria-live="polite"></div>
+            </div>
+
+            <div class="totals">
+              <div class="total-row"><span>Subtotal</span><span id="subtotalVal">RM 0.00</span></div>
+              <div class="total-row discount" id="discountRow" hidden><span id="discountLabel">Student discount</span><span id="discountVal">− RM 0.00</span></div>
+              <div class="total-row"><span>Campus pickup</span><span style="color:var(--green-primary); font-weight:800;">FREE</span></div>
+              <div class="total-row grand"><span>Total</span><span class="amount" id="totalVal">RM 0.00</span></div>
+            </div>
+
+            <button class="btn btn-primary btn-block" type="button" id="confirmBtn">Confirm Campus Pickup Order →</button>
+            <div class="trust-note"><span>🌿</span><span>Pay at the hub when you scan your Student QR. Eco-box and cutlery included with every meal.</span></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <!-- ORDER CONFIRMATION -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="m-check">✓</div>
+      <h2 id="modalTitle">Order Confirmed!</h2>
+      <div class="order-no" id="orderNo">#MM-0000</div>
+      <p style="color:var(--text-slate); margin-bottom:16px;">Your chefs are preparing your MealMate box. Show your Student QR code at the hub.</p>
+      <dl id="modalDetails"></dl>
+      <a href="HOME.html#menu" class="btn btn-primary btn-block">Back to Menu 🍴</a>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- 7. COMPREHENSIVE BRAND FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand-wordmark" style="font-size: 2rem; margin-bottom: 10px;">
+            <span style="color: var(--white);">MEAL</span><span style="color: var(--orange-primary);">MATE</span>
+          </div>
+          <p style="color: var(--sunny-yellow); font-weight: 700; font-size: 0.9rem; margin-bottom: 12px;">
+            "Good Deal, Excellent Meal"
+          </p>
+          <p style="color: rgba(255,255,255,0.75); font-size: 0.9rem; max-width: 320px;">
+            MealMate aims to provide affordable, high-quality, and healthy chef-prepared meals for university students across campus.
+          </p>
+        </div>
+
+        <div>
+          <h4>Explore</h4>
+          <ul class="footer-links">
+            <li><a href="HOME.html#menu">Today's Campus Menu</a></li>
+            <li><a href="HOME.html#student-plans">Student Meal Passes</a></li>
+            <li><a href="HOME.html#logo-story">Our Brand &amp; Logo Story</a></li>
+            <li><a href="HOME.html#how-it-works">Campus Pickup Hubs</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Dietary &amp; Info</h4>
+          <ul class="footer-links">
+            <li><a href="HOME.html#menu">100% Halal Certified Kitchen</a></li>
+            <li><a href="HOME.html#menu">Macro &amp; Allergen Guide</a></li>
+            <li><a href="HOME.html#menu">Eco-Box Recycling Program</a></li>
+            <li><a href="HOME.html#menu">Student Ambassador Club</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Campus Pickup Hours</h4>
+          <p style="font-size: 0.88rem; color: rgba(255,255,255,0.8); margin-bottom: 10px;">
+            <strong>Lunch Pickup:</strong> 11:45 AM – 2:15 PM<br />
+            <strong>Dinner Pickup:</strong> 5:45 PM – 8:15 PM
+          </p>
+          <span class="badge badge-green">🌿 Freshly Cooked Every Morning</span>
+        </div>
+      </div>
+
+      <div style="text-align: center; padding-top: 28px; font-size: 0.85rem; color: rgba(255,255,255,0.6);">
+        © 2025 MealMate Student Food Services. Designed with Trust Teal, Energy Orange &amp; Fresh Leaf Green.
+      </div>
+    </div>
+  </footer>
+
+  <!-- MIKO AI CHAT WIDGET -->
+  <button id="miko-launcher" type="button" aria-label="Open Miko AI chatbot">💬 Chat with Miko</button>
+  <section id="miko-panel" aria-label="MealMate AI chatbot">
+    <header class="miko-header">
+      <div><strong>🥗 Miko</strong><small>Your AI chat buddy · powered by MealMate</small></div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button id="miko-clear" type="button" style="background:transparent;color:white;border:1px solid rgba(255,255,255,.55);border-radius:999px;padding:6px 10px;font-size:.72rem;cursor:pointer;">Clear chat</button>
+        <button id="miko-close" type="button" aria-label="Close chat">×</button>
+      </div>
+    </header>
+    <div id="miko-messages" aria-live="polite">
+      <div class="miko-message miko-bot">Hey! I’m Miko 😊 You can talk to me about anything — university, assignments, tech, everyday life, or what to eat. And whenever you need MealMate menu or price info, I can help with that too. What’s on your mind?</div>
+    </div>
+    <form class="miko-input-row" id="miko-form">
+      <input id="miko-input" type="text" placeholder="Chat with Miko about anything..." autocomplete="off" required>
+      <button id="miko-send" type="submit">Send</button>
+    </form>
+  </section>
+
+  
+
+  <script>
+    // MealMate cart page. Shares its cart with HOME.html through localStorage.
+    const CART_KEY = 'mealmate_cart_v1';
+    const CAMPUS_KEY = 'mealmate_campus_v1';
+    const MAX_QTY = 10;
+
+    // Same menu as HOME.html and backend/AI.py
+    const CATALOGUE = [
+      { name: "Grilled Herb Chicken & Greens Bowl",     price: 7.90, emoji: "🥗", kcal: 510, protein: 38 },
+      { name: "Spiced Garlic Chicken & Egg Mate",       price: 6.50, emoji: "🍛", kcal: 490, protein: 26 },
+      { name: "Teriyaki Glazed Salmon & Broccoli Box",  price: 8.90, emoji: "🍱", kcal: 480, protein: 34 },
+      { name: "Golden Tofu & Rainbow Veggie Stir-Fry",  price: 6.90, emoji: "🥦", kcal: 430, protein: 22 },
+      { name: "Mediterranean Chicken & Spinach Wrap",   price: 7.20, emoji: "🌯", kcal: 460, protein: 31 },
+      { name: "Pesto Quinoa & Roasted Chickpea Bowl",   price: 7.50, emoji: "🍲", kcal: 445, protein: 24 },
+      { name: "Roasted Herb Chicken & Crisp Greens Bowl", price: 7.90, emoji: "🥗", kcal: 520, protein: 38 }
+    ];
+    const PASSES = {
+      "Weekly 5-Meal Student Pass":      { emoji: "🎟️", info: "5 any-menu meals per week" },
+      "Bi-Weekly 10-Meal Student Pass":  { emoji: "🎟️", info: "10 any-menu meals · valid 30 days" },
+      "Monthly 20-Meal Student Pass":    { emoji: "🎟️", info: "20 any-menu meals · valid 45 days" }
+    };
+    const PROMO_CODE = 'STUDENT20';
+    const PROMO_TARGET = 'Weekly 5-Meal Student Pass'; // matches the promo bar: 20% off the first 5-Meal pass
+    const PROMO_RATE = 0.20;
+
+    const DEFAULT_CART = [
+      { name: "Grilled Herb Chicken & Greens Bowl", price: 7.90, qty: 1 },
+      { name: "Spiced Garlic Chicken & Egg Mate", price: 6.50, qty: 1 }
+    ];
+
+    const $ = id => document.getElementById(id);
+    const rm = n => 'RM ' + n.toFixed(2);
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+    const isPass = name => Object.prototype.hasOwnProperty.call(PASSES, name);
+
+    function loadCart() {
+      try {
+        const raw = localStorage.getItem(CART_KEY);
+        if (raw === null) return DEFAULT_CART.map(i => ({ ...i }));
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return [];
+        return parsed.filter(i => i && typeof i.name === 'string' && Number(i.price) >= 0)
+                     .map(i => ({ name: i.name, price: Number(i.price), qty: Math.min(MAX_QTY, Math.max(1, parseInt(i.qty, 10) || 1)) }));
+      } catch (e) { return DEFAULT_CART.map(i => ({ ...i })); }
+    }
+    function saveCart() { try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) {} }
+
+    let cart = loadCart();
+    let promoApplied = false;
+
+    // ---- Pricing ----
+    function pricing() {
+      const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      let discount = 0;
+      if (promoApplied) {
+        const target = cart.find(i => i.name === PROMO_TARGET);
+        if (target) discount = target.price * PROMO_RATE; // first pass only
+      }
+      return { subtotal, discount, total: Math.max(0, subtotal - discount) };
+    }
+
+    // ---- Rendering ----
+    function lineHtml(item, idx) {
+      const cat = CATALOGUE.find(c => c.name === item.name);
+      const pass = PASSES[item.name];
+      const emoji = cat ? cat.emoji : (pass ? pass.emoji : '🍽️');
+      const meta = cat ? `🔥 ${cat.kcal} kcal · 💪 ${cat.protein}g protein` : (pass ? pass.info : 'MealMate item');
+      return `
+        <div class="line-item">
+          <div class="line-thumb" aria-hidden="true">${emoji}</div>
+          <div>
+            <div class="line-name">${esc(item.name)}</div>
+            <div class="line-meta">${esc(meta)}</div>
+            <div class="line-controls">
+              <div class="qty" role="group" aria-label="Quantity for ${esc(item.name)}">
+                <button type="button" data-act="dec" data-i="${idx}" aria-label="Decrease quantity" ${item.qty <= 1 ? 'disabled' : ''}>−</button>
+                <output aria-live="polite">${item.qty}</output>
+                <button type="button" data-act="inc" data-i="${idx}" aria-label="Increase quantity" ${item.qty >= MAX_QTY ? 'disabled' : ''}>+</button>
+              </div>
+              <button class="remove-btn" type="button" data-act="rm" data-i="${idx}">Remove</button>
+            </div>
+          </div>
+          <div class="line-price"><strong>${rm(item.price * item.qty)}</strong><span>${rm(item.price)} each</span></div>
+        </div>`;
+    }
+
+    function emptyHtml() {
+      return `
+        <div class="empty-state">
+          <div class="empty-icon">🥡</div>
+          <h2>Your MealMate Box is empty</h2>
+          <p>Add a chef-prepared student meal and it will show up here, ready for campus pickup.</p>
+          <a href="HOME.html#menu" class="btn btn-primary">Explore Today's Menu 🥄</a>
+        </div>`;
+    }
+
+    function render() {
+      const count = cart.reduce((n, i) => n + i.qty, 0);
+      const empty = cart.length === 0;
+      $('cartCount').textContent = count;
+      $('mealCountBadge').textContent = count + (count === 1 ? ' item' : ' items');
+      $('itemsHeading').textContent = empty ? 'Your Meals' : `Your Meals (${count})`;
+      $('headSub').textContent = empty ? 'Nothing here yet. Pick something tasty from the menu.' : 'Review your meals, pick a pickup slot and confirm.';
+      $('itemsList').innerHTML = empty ? emptyHtml() : cart.map(lineHtml).join('');
+      $('clearBtn').hidden = empty;
+      $('confirmBtn').disabled = empty;
+      $('suggestSection').hidden = false;
+
+      // Promo only stays valid while the target pass is in the cart
+      if (promoApplied && !cart.some(i => i.name === PROMO_TARGET)) {
+        promoApplied = false;
+        setPromoMsg('Code removed: the Weekly 5-Meal Pass is no longer in your box.', 'err');
+      }
+
+      const p = pricing();
+      $('subtotalVal').textContent = rm(p.subtotal);
+      $('discountRow').hidden = !(promoApplied && p.discount > 0);
+      $('discountLabel').textContent = `Student discount (${PROMO_CODE})`;
+      $('discountVal').textContent = '− ' + rm(p.discount);
+      $('totalVal').textContent = rm(p.total);
+
+      renderSuggestions();
+    }
+
+    function renderSuggestions() {
+      const inCart = new Set(cart.map(i => i.name));
+      // Featured bowl on the hero is a duplicate of the menu bowl; keep suggestions to the 6 menu meals
+      const options = CATALOGUE.slice(0, 6).filter(c => !inCart.has(c.name)).slice(0, 3);
+      $('suggestSection').hidden = options.length === 0;
+      $('suggestGrid').innerHTML = options.map(c => `
+        <div class="suggest-card">
+          <span class="s-emoji" aria-hidden="true">${c.emoji}</span>
+          <span class="s-name">${esc(c.name)}</span>
+          <span class="s-meta">🔥 ${c.kcal} kcal · 💪 ${c.protein}g</span>
+          <div class="s-foot">
+            <span class="s-price">${rm(c.price)}</span>
+            <button class="btn btn-primary btn-sm" type="button" data-add="${esc(c.name)}">+ Add</button>
+          </div>
+        </div>`).join('');
+    }
+
+    // ---- Actions ----
+    let toastTimer;
+    function toast(msg) {
+      const t = $('toast'); t.textContent = msg; t.classList.add('show');
+      clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+    function setPromoMsg(text, kind) { const m = $('promoMsg'); m.textContent = text; m.className = 'promo-msg' + (kind ? ' ' + kind : ''); }
+
+    $('itemsList').addEventListener('click', e => {
+      const b = e.target.closest('button[data-act]'); if (!b) return;
+      const i = +b.dataset.i, item = cart[i]; if (!item) return;
+      if (b.dataset.act === 'inc') item.qty = Math.min(MAX_QTY, item.qty + 1);
+      if (b.dataset.act === 'dec') item.qty = Math.max(1, item.qty - 1);
+      if (b.dataset.act === 'rm') { cart.splice(i, 1); toast('Removed from your box'); }
+      saveCart(); render();
+    });
+
+    $('suggestGrid').addEventListener('click', e => {
+      const b = e.target.closest('button[data-add]'); if (!b) return;
+      const cat = CATALOGUE.find(c => c.name === b.dataset.add); if (!cat) return;
+      const ex = cart.find(i => i.name === cat.name);
+      if (ex) ex.qty = Math.min(MAX_QTY, ex.qty + 1); else cart.push({ name: cat.name, price: cat.price, qty: 1 });
+      saveCart(); render(); toast('Added to your box 🍴');
+    });
+
+    $('clearBtn').addEventListener('click', () => {
+      if (!confirm('Remove everything from your MealMate Box?')) return;
+      cart = []; promoApplied = false; $('promoInput').value = ''; setPromoMsg('', ''); saveCart(); render();
+    });
+
+    function applyPromo() {
+      const code = $('promoInput').value.trim().toUpperCase();
+      if (!code) { setPromoMsg('Enter a promo code first.', 'err'); return; }
+      if (code !== PROMO_CODE) { promoApplied = false; setPromoMsg('That code isn’t valid.', 'err'); render(); return; }
+      if (!cart.some(i => i.name === PROMO_TARGET)) {
+        promoApplied = false;
+        setPromoMsg('STUDENT20 gives 20% off the Weekly 5-Meal Pass. Add that pass to use it.', 'err'); render(); return;
+      }
+      promoApplied = true; setPromoMsg('Student ID discount applied: 20% off your first 5-Meal Pass 🎓', 'ok'); render();
+    }
+    $('promoBtn').addEventListener('click', applyPromo);
+    $('promoInput').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); applyPromo(); } });
+
+    // Hub is shared with the home page
+    const hubSelect = $('hubSelect'), campusSelect = $('campusSelect');
+    try {
+      const saved = localStorage.getItem(CAMPUS_KEY);
+      if (saved && Array.from(hubSelect.options).some(o => o.value === saved)) hubSelect.value = saved;
+    } catch (e) {}
+    campusSelect.value = hubSelect.value;
+    function setHub(v) { hubSelect.value = v; campusSelect.value = v; try { localStorage.setItem(CAMPUS_KEY, v); } catch (e) {} }
+    hubSelect.addEventListener('change', () => setHub(hubSelect.value));
+    campusSelect.addEventListener('change', () => setHub(campusSelect.value));
+
+    // Checkout (front-end only, same as the home page: no order API exists yet)
+    $('confirmBtn').addEventListener('click', () => {
+      if (cart.length === 0) return;
+      const p = pricing();
+      const hubText = hubSelect.options[hubSelect.selectedIndex].text;
+      const slot = document.querySelector('input[name="slot"]:checked').value;
+      const count = cart.reduce((n, i) => n + i.qty, 0);
+      const order = window.MealAuth
+        ? MealAuth.addOrder({ items: cart.map(i => ({ name: i.name, price: i.price, qty: i.qty })), total: p.total, hub: hubText, slot })
+        : { id: 'MM-' + String(Math.floor(1000 + Math.random() * 9000)) };
+      $('orderNo').textContent = '#' + order.id;
+      $('modalDetails').innerHTML = `
+        <div><dt>Items</dt><dd>${count}</dd></div>
+        <div><dt>Pickup hub</dt><dd>${esc(hubText)}</dd></div>
+        <div><dt>Pickup time</dt><dd>${esc(slot)}</dd></div>
+        <div><dt>Total (pay at hub)</dt><dd>${rm(p.total)}</dd></div>`;
+      $('modalOverlay').classList.add('open');
+      cart = []; promoApplied = false; $('promoInput').value = ''; setPromoMsg('', ''); saveCart(); render();
+    });
+    $('modalOverlay').addEventListener('click', e => { if (e.target === $('modalOverlay')) $('modalOverlay').classList.remove('open'); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') $('modalOverlay').classList.remove('open'); });
+
+    // Open Miko from the nudge card
+    $('askMikoBtn').addEventListener('click', () => { document.getElementById('miko-launcher').click(); });
+
+    // Keep in sync if the cart is changed in another tab
+    window.addEventListener('storage', e => { if (e.key === CART_KEY) { cart = loadCart(); render(); } });
+
+    render();
+  </script>
+
+  <script>
+    // Miko: hybrid AI chat with browser-side chat history.
+    const mikoLauncher = document.getElementById('miko-launcher');
+    const mikoPanel = document.getElementById('miko-panel');
+    const mikoClose = document.getElementById('miko-close');
+    const mikoClear = document.getElementById('miko-clear');
+    const mikoForm = document.getElementById('miko-form');
+    const mikoInput = document.getElementById('miko-input');
+    const mikoMessages = document.getElementById('miko-messages');
+    const mikoSend = document.getElementById('miko-send');
+    const MIKO_HISTORY_KEY = 'mealmate_miko_hybrid_history_v1';
+
+    const mikoWelcome = "Hey! I’m Miko 😊 You can talk to me about anything — university, assignments, tech, everyday life, or what to eat. And whenever you need MealMate menu or price info, I can help with that too. What’s on your mind?";
+
+    function addMikoMessage(text, sender, save = true) {
+      const message = document.createElement('div');
+      message.className = 'miko-message ' + (sender === 'user' ? 'miko-user' : 'miko-bot');
+      message.textContent = text;
+      mikoMessages.appendChild(message);
+      mikoMessages.scrollTop = mikoMessages.scrollHeight;
+      if (save) saveMikoHistory();
+      return message;
+    }
+
+    function getMikoHistory() {
+      return Array.from(mikoMessages.querySelectorAll('.miko-message'))
+        .filter(el => !el.dataset.temporary)
+        .map(el => ({
+          role: el.classList.contains('miko-user') ? 'user' : 'assistant',
+          content: el.textContent.trim()
+        }))
+        .filter(item => item.content && item.content !== mikoWelcome)
+        .slice(-12);
+    }
+
+    function saveMikoHistory() {
+      try {
+        const history = Array.from(mikoMessages.querySelectorAll('.miko-message'))
+          .filter(el => !el.dataset.temporary)
+          .map(el => ({
+            role: el.classList.contains('miko-user') ? 'user' : 'assistant',
+            content: el.textContent
+          }));
+        localStorage.setItem(MIKO_HISTORY_KEY, JSON.stringify(history));
+      } catch (error) {
+        console.warn('Miko history could not be saved:', error);
+      }
+    }
+
+    function loadMikoHistory() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(MIKO_HISTORY_KEY) || '[]');
+        mikoMessages.innerHTML = '';
+        if (!Array.isArray(saved) || saved.length === 0) {
+          addMikoMessage(mikoWelcome, 'bot', false);
+          return;
+        }
+        saved.slice(-40).forEach(item => {
+          if (item && typeof item.content === 'string' &&
+              (item.role === 'user' || item.role === 'assistant')) {
+            addMikoMessage(item.content, item.role === 'user' ? 'user' : 'bot', false);
+          }
+        });
+      } catch (error) {
+        mikoMessages.innerHTML = '';
+        addMikoMessage(mikoWelcome, 'bot', false);
+      }
+      mikoMessages.scrollTop = mikoMessages.scrollHeight;
+    }
+
+    mikoLauncher.addEventListener('click', () => {
+      mikoPanel.classList.add('open');
+      mikoInput.focus();
+    });
+    mikoClose.addEventListener('click', () => mikoPanel.classList.remove('open'));
+
+    mikoClear.addEventListener('click', () => {
+      if (!confirm('Clear your Miko conversation?')) return;
+      localStorage.removeItem(MIKO_HISTORY_KEY);
+      mikoMessages.innerHTML = '';
+      addMikoMessage(mikoWelcome, 'bot');
+    });
+
+    loadMikoHistory();
+
+    mikoForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const message = mikoInput.value.trim();
+      if (!message) return;
+
+      // Capture earlier messages before adding the new user message.
+      const history = getMikoHistory();
+      addMikoMessage(message, 'user');
+      mikoInput.value = '';
+      mikoSend.disabled = true;
+      mikoSend.textContent = '...';
+      const waitingMessage = addMikoMessage('Miko is thinking...', 'bot', false);
+      waitingMessage.dataset.temporary = 'true';
+
+      try {
+        const response = await fetch('http://127.0.0.1:8000/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, history })
+        });
+
+        if (!response.ok) {
+          throw new Error('The chatbot server returned error ' + response.status);
+        }
+
+        const data = await response.json();
+        waitingMessage.textContent = data.reply || 'Sorry, I could not create a reply.';
+        delete waitingMessage.dataset.temporary;
+        saveMikoHistory();
+      } catch (error) {
+        waitingMessage.textContent = 'I can’t reach my local AI server right now. Please check that Ollama and the MealMate backend are running.';
+        delete waitingMessage.dataset.temporary;
+        saveMikoHistory();
+        console.error('Miko chat error:', error);
+      } finally {
+        mikoSend.disabled = false;
+        mikoSend.textContent = 'Send';
+        mikoInput.focus();
+        mikoMessages.scrollTop = mikoMessages.scrollHeight;
+      }
+    });
+  </script>
+
+  <script src="auth.js"></script>
+</body>
+</html>
